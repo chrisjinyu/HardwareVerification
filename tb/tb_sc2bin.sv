@@ -1,6 +1,5 @@
 //   @author christian yu
 //   testbench for sc2bin module
-//   NEEDS CLEANING
 
 module tb_sc2bin;
 
@@ -87,9 +86,6 @@ string                                    resf_name = {"./sim_output/tb_sc2bin:"
 
    integer seed = SEED;
 
-   // WJR: this won't work if there's a register between them
-   //assign is_negative = sc_to_bin.relu_out != sc_to_bin.subt_out;
-
    initial begin
       //$monitor(i, "%b, %b", sc_to_bin.subt_out, sc_to_bin.relu_out);
       //$dumpfile("sc2bin.vcd");
@@ -132,15 +128,11 @@ string                                    resf_name = {"./sim_output/tb_sc2bin:"
 
          //sc_val[i] = actual_val[(i+1)*BITWIDTH-1:i*BITWIDTH]/(2.0**BITWIDTH);
          //actual_sc_val = sc_val[31:24] + sc_val[23:16] - sc_val[15:8] - sc_val[7:0];
-         // WJR: what is this?
          //ref_sc_val = ref_val*(2**shft_amt)/(2.0**(BITWIDTH*shft_amt));
  
          cnt_en = 1;
          act_en = 0;
 
-         // WJR: Stream lengths should depend on shift. In practice, we're only using shift when streams are longer
-         // This should take care of your overflow issues also. And if we do that, shifter output can be reduced
-         // to just "BITWIDTH" and not "BITWIDTH+MAXSHIFT"
          #(2*TCLK * 2**(BITWIDTH-shft_amt))
  
          cnt_en = 0;
